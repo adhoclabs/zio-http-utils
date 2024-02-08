@@ -2,7 +2,7 @@ organization := "co.adhoclabs"
 
 name := "ZioHttpUtils"
 
-version := "0.1-SNAPSHOT"
+version := "0.0.1-SNAPSHOT"
 
 scalaVersion := "2.12.12"
 
@@ -29,8 +29,8 @@ libraryDependencies ++= Seq(
   "org.scalamock"     %% "scalamock"           % "5.2.0"         % Test,
 
   // ZIO-HTTP (Let's get away from akka!)
-  "dev.zio" %% "zio-http" % "3.0.0-RC4+56-5c9b8c71-SNAPSHOT",
-  "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+56-5c9b8c71-SNAPSHOT",
+  "dev.zio" %% "zio-http" % "3.0.0-RC4+64-21989c95-SNAPSHOT",
+  "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+64-21989c95-SNAPSHOT",
   "dev.zio" %% "zio-schema"          % "0.4.15",
 )
 
