@@ -74,6 +74,3 @@ workflows:
           requires:
             - test_only
           context: nexus-publish
-          filters:
-            branches:
-              ignore: /main/
