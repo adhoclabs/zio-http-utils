@@ -1,7 +1,5 @@
 package co.adhoclabs.template.api
 
-import co.adhoclabs.model.ErrorResponse
-import co.adhoclabs.template.business.HealthManager
 import org.slf4j.{Logger, LoggerFactory}
 import zio._
 import zio.http._
@@ -16,39 +14,18 @@ object HealthEndpoint {
     Endpoint(Method.GET / "health" / "api")
       .out[String]
 
-  import Schemas.errorResponseSchema
-  val db =
-    Endpoint(Method.GET / "health" / "db")
-      .out[String]
-      .outError[ErrorResponse](Status.InternalServerError)
-
   val endpoints =
     List(
       api,
-      db,
       okBoomer
     )
 }
 
-case class HealthRoutes(implicit healthManager: HealthManager) {
+case class HealthRoutes() {
   val api =
     HealthEndpoint.api.implement {
       Handler.fromZIO {
         ZIO.succeed("API is healthy!")
-      }
-    }
-
-  val db =
-    HealthEndpoint.db.implement {
-      Handler.fromZIO {
-        ZIO.fromFuture(
-          implicit ec =>
-            healthManager.executeDbGet()
-        ).map(_ => "DB is healthy!")
-          .mapError { throwable =>
-            println("Throwable in health check: " + throwable)
-            ErrorResponse(throwable.getMessage)
-          }
       }
     }
 
@@ -68,5 +45,5 @@ case class HealthRoutes(implicit healthManager: HealthManager) {
     }
 
   val routes =
-    Routes(api, db, okBoomer)
+    Routes(api, okBoomer)
 }
