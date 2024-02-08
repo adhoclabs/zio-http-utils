@@ -1,0 +1,7 @@
+You just deployed zio-http-poc-service {{ .Chart.Version }} revision {{ .Release.Revision }} to {{ .Values.cluster.namespace }}
+To monitor this rollout:
+    kubectl argo rollouts get rollout zio-http-poc-service -w
+To promote this rollout:
+    kubectl argo rollouts promote zio-http-poc-service
+To abort the rollout:
+    kubectl argo rollouts abort zio-http-poc-service

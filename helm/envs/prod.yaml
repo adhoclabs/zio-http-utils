@@ -1,0 +1,53 @@
+cluster:
+  namespace: prod
+
+image:
+  tag: "@sha256:81ba2f6fbd080e59d2e6545ac7ed95c83dd4a330f068fd9b2beb81cbce7caa86"
+
+awsSettings:
+  iamRole: prod-business-service-sa
+  region: us-west-2
+
+datadog:
+  enabled: true
+  traceSampleRate: "1"
+  logsInjection: "true"
+
+appSettings:
+  javaOpts: "-javaagent:/opt/datadog/dd-agent.jar -Dconfig.file=/var/lib/gen_config/application_gen.conf -XX:+UseG1GC -Xms512m -Xmx1664m"
+  exampleSecretId: prod-zio-http-poc-secret-shhhh
+  replicas: 2
+  db:
+    hostname: burner-prod.cnrchmr0nbdg.us-west-2.rds.amazonaws.com
+    password: Y7ydwjsaAnBA6W7
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "2000m"
+      memory: "2Gi"
+  
+  probes:
+    liveness:
+      periodSeconds: 20
+      initialDelaySeconds: 45
+      timeoutSeconds: 5
+    readiness:
+      periodSeconds: 5
+      initialDelaySeconds: 45
+      timeoutSeconds: 1
+
+configMap:
+  preserveOldReleases: false
+
+argoStrategy:
+  canary:
+    antiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        weight: 1
+    maxSurge: "100%"
+    maxUnavailable: "0"
+    steps:
+    - setWeight: 50
+    - pause: { }

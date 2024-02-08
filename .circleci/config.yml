@@ -1,0 +1,79 @@
+version: 2
+
+jobs:
+
+  test_only:
+    docker:
+      - image: ahlops/scala-builder:2.0.2
+    resource_class: large
+    working_directory: ~/repo
+    steps:
+      - checkout:
+          path: ~/repo
+
+      - restore_cache:
+          key: v1-ivy2-{{ checksum "build.sbt" }}
+
+      - run:
+          name: copy cicd folder
+          command: cp -avf ./cicd/.sbt/ ~/
+
+      - run:
+          name: set nexus user/password
+          command: |
+            echo "user=${NEXUS_USER}" >> ~/.sbt/credentials
+            echo "password=${NEXUS_PASSWORD}" >> ~/.sbt/credentials
+
+      - run:
+          name: run tests
+          command: |
+            mkdir -p ./target/test-reports
+            sbt +test
+
+      - store_test_results:
+          path: ./target/test-reports
+
+      - save_cache:
+          key: v1-ivy2-{{ checksum "build.sbt" }}
+          paths:
+            - "~/.ivy2/cache"
+  publish:
+    docker:
+      - image: ahlops/scala-builder:2.0.2
+    resource_class: large
+    working_directory: ~/repo
+    steps:
+      - checkout:
+          path: ~/repo
+
+      - restore_cache:
+          key: v1-ivy2-{{ checksum "build.sbt" }}
+
+      - run:
+          name: copy cicd folder
+          command: cp -avf ./cicd/.sbt/ ~/
+
+      - run:
+          name: set nexus user/password
+          command: |
+            echo "user=${NEXUS_USER}" >> ~/.sbt/credentials
+            echo "password=${NEXUS_PASSWORD}" >> ~/.sbt/credentials
+
+      - run:
+          name: publish
+          command: |
+            sbt +publish
+
+workflows:
+  version: 2
+  test_and_publish:
+    jobs:
+      - test_only:
+          context: nexus-publish
+      - publish:
+          requires:
+            - test_only
+          context: nexus-publish
+          filters:
+            branches:
+              ignore: /main/
