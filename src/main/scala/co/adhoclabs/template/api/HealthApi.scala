@@ -5,17 +5,18 @@ import co.adhoclabs.template.exceptions.{UnexpectedException, ValidationExceptio
 import org.slf4j.{Logger, LoggerFactory}
 import zio._
 import zio.http._
-import zio.http.endpoint.Endpoint
+import zio.http.endpoint.{Endpoint, EndpointMiddleware}
 import Schemas._
+import zio.http.endpoint.EndpointMiddleware.None
 
 import scala.concurrent.Future
 
 object HealthEndpoint {
   val okBoomer =
-    Endpoint(Method.GET / "health" / "boom")
-      .out[String]
-      .outError[BadRequestResponse](Status.BadRequest)
-      .outError[InternalErrorResponse](Status.InternalServerError)
+    ApiErrors.attachStandardErrors(
+      Endpoint(Method.GET / "health" / "boom")
+        .out[String]
+    )
 
   val api =
     Endpoint(Method.GET / "health" / "api")
@@ -44,12 +45,6 @@ case class HealthRoutes() {
         ZIO.attempt(???)
           .mapError(ex => ApiErrors.exceptionHandler(ex))
       }
-    }
-
-  def mapRouteErrors[Output](future: Future[Output]) =
-    Handler.fromZIO {
-      ZIO.fromFuture(implicit ec => future)
-        .mapError(ex => ApiErrors.exceptionHandler(ex))
     }
 
   val routes =
