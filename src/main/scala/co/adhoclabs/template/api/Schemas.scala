@@ -12,12 +12,14 @@ object NotFoundRequestResponse {
   def apply(errorResponse: ErrorResponse): NotFoundRequestResponse =
     NotFoundRequestResponse(errorResponse.error, errorResponse.errorCode, errorResponse.contextId)
 }
+
+sealed trait UserFriendlyError
 case class BadRequestResponse(
   error:     String,
   errorCode: Option[Int]    = None,
   contextId: Option[String] = None
 
-)
+) extends UserFriendlyError
 object BadRequestResponse {
   def apply(errorResponse: ErrorResponse): BadRequestResponse =
     BadRequestResponse(errorResponse.error, errorResponse.errorCode, errorResponse.contextId)
@@ -28,7 +30,7 @@ case class InternalErrorResponse(
   errorCode: Option[Int]    = None,
   contextId: Option[String] = None
 
-)
+) extends UserFriendlyError
 object InternalErrorResponse {
   def apply(errorResponse: ErrorResponse): InternalErrorResponse =
     InternalErrorResponse(errorResponse.error, errorResponse.errorCode, errorResponse.contextId)

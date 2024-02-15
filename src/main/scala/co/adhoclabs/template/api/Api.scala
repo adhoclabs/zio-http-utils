@@ -36,58 +36,59 @@ case class ApiZ(
   // TODO Where should this live?
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
-  val zioRoutes: Routes[Any, Nothing] = (docsRoute ++ healthRoute.routes ++ unhandled)
-    .handleErrorCauseZIO { cause =>
-      import Schemas.errorResponseSchema
-      import zio.schema.codec.JsonCodec.schemaBasedBinaryCodec
-      println("In handleErrorCause")
-      cause match {
-        case f: Cause.Fail[Response] =>
-          for {
-            _ <- ZIO.logErrorCause("Big Fail", f)
+  val zioRoutes = (docsRoute ++ healthRoute.routes ++ unhandled)
 
-            bodyString <- f.value.body.asString
-              .orDie
-            _ <- ZIO.logError(bodyString)
-          } yield f.value.copy(body = Body.from(ErrorResponse("Did you pass the wrong URL into the mocked call?" + bodyString)))
-
-        case Cause.Die(value, trace) =>
-          value match {
-            case validationException: ValidationException =>
-              println("ValidationException: " + validationException)
-              ZIO.succeed(
-                Response(Status.BadRequest, body = Body.from(validationException.errorResponse))
-              )
-            case unexpectedException: UnexpectedException =>
-              println("Unexpected: " + unexpectedException)
-              ZIO.succeed(
-                Response(Status.InternalServerError, body = Body.from(unexpectedException.errorResponse))
-              )
-            case exception: Exception =>
-              logger.error("", exception)
-              println("", exception)
-              ZIO.succeed(
-                Response(Status.InternalServerError, body = Body.from(ErrorResponse("Exception. " + exception.getMessage)))
-              )
-            case rawThrowable =>
-              ZIO.succeed(
-                Response(Status.BadRequest, body = Body.from(ErrorResponse(rawThrowable.getMessage)))
-              )
-          }
-        case interrupt: Cause.Interrupt =>
-          ZIO.succeed(
-            Response(Status.InternalServerError, body = Body.from(ErrorResponse("Process Interrupted. " + interrupt)))
-          )
-        case other =>
-          println("Other: " + other)
-
-          ZIO.succeed(
-            Response(Status.Forbidden, body = Body.from(ErrorResponse(other.prettyPrint)))
-          )
-
-      }
-
-    }
+//    .handleErrorCauseZIO { cause =>
+//      import Schemas.errorResponseSchema
+//      import zio.schema.codec.JsonCodec.schemaBasedBinaryCodec
+//      println("In handleErrorCause: " + cause.prettyPrint)
+//      cause match {
+//        case f: Cause.Fail[Response] =>
+//          for {
+//            _ <- ZIO.logErrorCause("Big Fail", f)
+//
+//            bodyString <- f.value.body.asString
+//              .orDie
+//            _ <- ZIO.logError(bodyString)
+//          } yield f.value.copy(body = Body.from(ErrorResponse("Did you pass the wrong URL into the mocked call?" + bodyString)))
+//
+//        case Cause.Die(value, trace) =>
+//          value match {
+//            case validationException: ValidationException =>
+//              println("ValidationException: " + validationException)
+//              ZIO.succeed(
+//                Response(Status.BadRequest, body = Body.from(validationException.errorResponse))
+//              )
+//            case unexpectedException: UnexpectedException =>
+//              println("Unexpected: " + unexpectedException)
+//              ZIO.succeed(
+//                Response(Status.InternalServerError, body = Body.from(unexpectedException.errorResponse))
+//              )
+//            case exception: Exception =>
+//              logger.error("", exception)
+//              println("", exception)
+//              ZIO.succeed(
+//                Response(Status.InternalServerError, body = Body.from(ErrorResponse("Exception. " + exception.getMessage)))
+//              )
+//            case rawThrowable =>
+//              ZIO.succeed(
+//                Response(Status.BadRequest, body = Body.from(ErrorResponse(rawThrowable.getMessage)))
+//              )
+//          }
+//        case interrupt: Cause.Interrupt =>
+//          ZIO.succeed(
+//            Response(Status.InternalServerError, body = Body.from(ErrorResponse("Process Interrupted. " + interrupt)))
+//          )
+//        case other =>
+//          println("Other: " + other)
+//
+//          ZIO.succeed(
+//            Response(Status.Forbidden, body = Body.from(ErrorResponse(other.prettyPrint)))
+//          )
+//
+//      }
+//
+//    }
     .mapErrorZIO(errResponse =>
       ZIO.debug("ErrorResponse: " + errResponse).as(errResponse)) @@
     Middleware.requestLogging(statusCode => zio.LogLevel.Warning)
@@ -150,18 +151,6 @@ class ApiImpl(
   protected def logRequestException(exception: Exception): Unit =
     logger.error("", exception)
 
-  protected val exceptionHandler: ExceptionHandler =
-    ExceptionHandler {
-      case validationException: ValidationException =>
-        logRequestException(validationException)
-        complete(StatusCodes.BadRequest -> validationException.errorResponse)
-      case unexpectedException: UnexpectedException =>
-        logRequestException(unexpectedException)
-        complete(StatusCodes.InternalServerError -> unexpectedException.errorResponse)
-      case exception: Exception =>
-        logRequestException(exception)
-        complete(StatusCodes.InternalServerError -> exception.getMessage)
-    }
 }
 
 */
