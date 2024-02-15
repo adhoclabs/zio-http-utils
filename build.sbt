@@ -2,7 +2,7 @@ organization := "co.adhoclabs"
 
 name := "ZioHttpUtils"
 
-version := "0.0.2-SNAPSHOT"
+version := "0.0.3"
 
 scalaVersion := "2.12.12"
 
