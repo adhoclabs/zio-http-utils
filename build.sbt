@@ -5,6 +5,9 @@ inThisBuild(
 
     scalaVersion := "2.12.12",
 
+    resolvers +=
+      "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+
 
     // Prevents tests from executing when running 'sbt assembly' (prevents repetition in Circle)
     test in assembly := {},
@@ -29,6 +32,7 @@ inThisBuild(
 
 lazy val root =
   project.in(file("."))
+    .settings(publish / skip := true)
     .aggregate(models, utils, testUtils)
 
 lazy val models =
@@ -42,22 +46,13 @@ lazy val models =
         else
           Some("releases"  at nexus + "content/repositories/releases")
       },
-      resolvers +=
-        "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
       libraryDependencies ++= Seq(
 
         // External dependencies
         "ch.qos.logback"      %  "logback-classic"      % "1.2.3",
-        "org.postgresql"      %  "postgresql"           % "42.2.24",
-        "com.typesafe.slick"  %% "slick"                % "3.3.3",
-        "com.typesafe.slick"  %% "slick-hikaricp"       % "3.3.3",
-        "com.github.tminglei" %% "slick-pg"             % "0.19.7",
-        "org.flywaydb"        %  "flyway-core"          % "7.15.0",
 
         // Our dependencies
         "co.adhoclabs" %% "model"      % "3.4.0",
-        "co.adhoclabs" %% "secrets"    % "1.0.0",
-        "co.adhoclabs" %% "sqs_client" % "3.3.1",
 
         // Test dependencies
         "org.scalatest"     %% "scalatest"           % "3.2.16"        % Test,
@@ -84,22 +79,13 @@ lazy val utils =
         else
           Some("releases"  at nexus + "content/repositories/releases")
       },
-      resolvers +=
-        "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
       libraryDependencies ++= Seq(
 
 // External dependencies
         "ch.qos.logback"      %  "logback-classic"      % "1.2.3",
-        "org.postgresql"      %  "postgresql"           % "42.2.24",
-        "com.typesafe.slick"  %% "slick"                % "3.3.3",
-        "com.typesafe.slick"  %% "slick-hikaricp"       % "3.3.3",
-        "com.github.tminglei" %% "slick-pg"             % "0.19.7",
-        "org.flywaydb"        %  "flyway-core"          % "7.15.0",
 
         // Our dependencies
         "co.adhoclabs" %% "model"      % "3.4.0",
-        "co.adhoclabs" %% "secrets"    % "1.0.0",
-        "co.adhoclabs" %% "sqs_client" % "3.3.1",
 
         // Test dependencies
         "org.scalatest"     %% "scalatest"           % "3.2.16"        % Test,
@@ -125,21 +111,12 @@ lazy val testUtils =
         else
           Some("releases"  at nexus + "content/repositories/releases")
       },
-      resolvers +=
-        "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
       libraryDependencies ++= Seq(
         // External dependencies
         "ch.qos.logback"      %  "logback-classic"      % "1.2.3",
-        "org.postgresql"      %  "postgresql"           % "42.2.24",
-        "com.typesafe.slick"  %% "slick"                % "3.3.3",
-        "com.typesafe.slick"  %% "slick-hikaricp"       % "3.3.3",
-        "com.github.tminglei" %% "slick-pg"             % "0.19.7",
-        "org.flywaydb"        %  "flyway-core"          % "7.15.0",
 
         // Our dependencies
         "co.adhoclabs" %% "model"      % "3.4.0",
-        "co.adhoclabs" %% "secrets"    % "1.0.0",
-        "co.adhoclabs" %% "sqs_client" % "3.3.1",
 
         // Test dependencies
         "org.scalatest"     %% "scalatest"           % "3.2.16",
