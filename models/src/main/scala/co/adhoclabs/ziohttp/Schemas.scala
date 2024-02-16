@@ -1,6 +1,7 @@
-package co.adhoclabs.template.api
+package co.adhoclabs.ziohttp
 
 import co.adhoclabs.model.{EmptyResponse, ErrorResponse}
+import zio.schema.{DeriveSchema, Schema}
 
 case class NotFoundRequestResponse(
   error:     String,
@@ -37,7 +38,6 @@ object InternalErrorResponse {
 }
 
 object Schemas {
-  import zio.schema.{DeriveSchema, Schema}
   // TODO better spot for this. Ideally it would live in the upstream lib
   implicit val schema: Schema[EmptyResponse] = DeriveSchema.gen
   implicit val errorResponseSchema: Schema[ErrorResponse] = DeriveSchema.gen

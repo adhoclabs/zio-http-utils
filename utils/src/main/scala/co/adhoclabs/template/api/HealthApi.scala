@@ -1,15 +1,9 @@
 package co.adhoclabs.template.api
 
-import co.adhoclabs.model.ErrorResponse
-import co.adhoclabs.template.exceptions.{UnexpectedException, ValidationException}
 import org.slf4j.{Logger, LoggerFactory}
 import zio._
 import zio.http._
-import zio.http.endpoint.{Endpoint, EndpointMiddleware}
-import Schemas._
-import zio.http.endpoint.EndpointMiddleware.None
-
-import scala.concurrent.Future
+import zio.http.endpoint.Endpoint
 
 object HealthEndpoint {
   val okBoomer =

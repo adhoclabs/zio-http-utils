@@ -1,4 +1,4 @@
-package co.adhoclabs.template.api
+package co.adhoclabs.ziohttp.testutils
 
 import co.adhoclabs.model.ErrorResponse
 import org.scalamock.scalatest.AsyncMockFactory
@@ -16,7 +16,7 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
     expectedStatus: Status,
     errorAssertion: ErrorResponse => Boolean = _ => true
   ) = {
-    import co.adhoclabs.template.api.Schemas.errorResponseSchema
+    import co.adhoclabs.ziohttp.Schemas._
 
     val (status, errorResponse) =
       invokeZioRequest[ErrorResponse](app, request)
@@ -44,9 +44,10 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
   }
 
   private def invokeZioRequest[T: Schema](app: HttpApp[Any], request: Request): Either[(Status, ErrorResponse), (Status, T)] = {
-    import co.adhoclabs.template.api.Schemas.errorResponseSchema
     val runtime = zio.Runtime.default
     Unsafe.unsafe { implicit unsafe =>
+
+      import co.adhoclabs.ziohttp.Schemas._
       runtime.unsafe.run {
         (for {
           response <- app.apply(request)

@@ -3,12 +3,14 @@ package co.adhoclabs.template.api
 import co.adhoclabs.template.exceptions.{UnexpectedException, ValidationException}
 import co.adhoclabs.model.ErrorResponse
 import co.adhoclabs.template.exceptions.{UnexpectedException, ValidationException}
+import co.adhoclabs.ziohttp.Schemas._
+import co.adhoclabs.ziohttp._
 import org.slf4j.{Logger, LoggerFactory}
 import zio._
 import zio.http._
 import zio.http.endpoint.{Endpoint, EndpointMiddleware}
-import Schemas._
 import zio.http.endpoint.EndpointMiddleware.None
+import zio.schema.codec.JsonCodec.{JsonDecoder, schemaBasedBinaryCodec}
 
 import scala.concurrent.Future
 
