@@ -38,7 +38,6 @@ object InternalErrorResponse {
 }
 
 object Schemas {
-  // TODO better spot for this. Ideally it would live in the upstream lib
   implicit val schema: Schema[EmptyResponse] = DeriveSchema.gen
   implicit val errorResponseSchema: Schema[ErrorResponse] = DeriveSchema.gen
 

@@ -23,8 +23,6 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
         .left
         .getOrElse(throw new Exception("Broken failure test!"))
 
-    println("TODO Better assertion reporting. errorResponse: " + errorResponse)
-    println("TODO Better assertion reporting. errorStatus  : " + status)
     assert(status == expectedStatus)
     assert(errorAssertion(errorResponse))
   }
@@ -53,7 +51,6 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
           response <- app.apply(request)
           _ <- ZIO.when(response.status.isError)(
             for {
-              _ <- response.body.asString.debug("Error response body: ")
               errorResponse <- response.body.to[ErrorResponse]
             } yield ZIO.fail((response.status, errorResponse))
           )
@@ -61,10 +58,8 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
         } yield (response.status, res))
           .mapError {
             case (errorStatus: Status, er: ErrorResponse) =>
-              println("A")
               (errorStatus, er)
             case other =>
-              println("B")
               (Status.InternalServerError, ErrorResponse(other.toString))
           }
       }
@@ -77,7 +72,6 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
             Right((status, value))
         }
       case other =>
-        println("Other: " + other)
         other match {
           case Exit.Success(value) => Right(value)
           case Exit.Failure(cause) =>

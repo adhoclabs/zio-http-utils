@@ -7,6 +7,7 @@ import zio.{ZIO, ZIOAppDefault}
 
 import java.time.Clock
 
+// TODO Move to unpublished project
 object MainZio extends ZIOAppDefault {
   implicit val healthRoutes = HealthRoutes()
 
