@@ -23,7 +23,7 @@ object HealthEndpoint {
     )
 }
 
-case class HealthRoutes() {
+object HealthRoutes {
   val api =
     HealthEndpoint.api.implement {
       Handler.fromZIO {

@@ -1,17 +1,34 @@
 package co.adhoclabs.template
 
-import co.adhoclabs.template.api.{ApiZ, HealthRoutes}
+import co.adhoclabs.template.api.{HealthEndpoint, HealthRoutes}
 import com.typesafe.config.{Config, ConfigFactory}
-import zio.http.Server
+import org.slf4j.{Logger, LoggerFactory}
+import zio.http.endpoint.openapi.{OpenAPIGen, SwaggerUI}
+import zio.http.{Middleware, Server}
 import zio.{ZIO, ZIOAppDefault}
 
 import java.time.Clock
 
 // TODO Move to unpublished project
 object MainZio extends ZIOAppDefault {
-  implicit val healthRoutes = HealthRoutes()
 
-  val app = ApiZ().zioRoutes.toHttpApp
+  val openApi = OpenAPIGen.fromEndpoints(
+    title   = "BurnerAlbums",
+    version = "1.0",
+    HealthEndpoint.endpoints
+  )
+
+  val docsRoute =
+    SwaggerUI.routes("docs", openApi)
+
+  // TODO Where should this live?
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
+
+  val zioRoutes = (docsRoute ++ HealthRoutes.routes) @@
+    Middleware.requestLogging(statusCode => zio.LogLevel.Warning)
+
+  val app = zioRoutes.toHttpApp
+
   val config = Dependencies.config
   val host = config.getString("co.adhoclabs.template.host")
   val port = config.getInt("co.adhoclabs.template.port")
