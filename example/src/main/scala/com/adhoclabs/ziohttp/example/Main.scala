@@ -1,6 +1,5 @@
-package co.adhoclabs.template
+package com.adhoclabs.ziohttp.example
 
-import co.adhoclabs.template.api.{HealthEndpoint, HealthRoutes}
 import com.typesafe.config.{Config, ConfigFactory}
 import org.slf4j.{Logger, LoggerFactory}
 import zio.http.endpoint.openapi.{OpenAPIGen, SwaggerUI}
@@ -9,13 +8,12 @@ import zio.{ZIO, ZIOAppDefault}
 
 import java.time.Clock
 
-// TODO Move to unpublished project
 object MainZio extends ZIOAppDefault {
 
   val openApi = OpenAPIGen.fromEndpoints(
     title   = "BurnerAlbums",
     version = "1.0",
-    HealthEndpoint.endpoints
+    AppApi.endpoints
   )
 
   val docsRoute =
@@ -24,7 +22,7 @@ object MainZio extends ZIOAppDefault {
   // TODO Where should this live?
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
-  val zioRoutes = (docsRoute ++ HealthRoutes.routes) @@
+  val zioRoutes = (docsRoute ++ AppRoutes.routes) @@
     Middleware.requestLogging(statusCode => zio.LogLevel.Warning)
 
   val app = zioRoutes.toHttpApp
@@ -62,5 +60,4 @@ object Dependencies {
 
 object Configuration {
   val config: Config = ConfigFactory.load
-  val sqsConfig: Config = config.getConfig("co.adhoclabs.template.sqs")
 }

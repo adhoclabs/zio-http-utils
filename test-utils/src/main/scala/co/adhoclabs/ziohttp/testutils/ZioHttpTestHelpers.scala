@@ -76,9 +76,7 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
           case Exit.Success(value) => Right(value)
           case Exit.Failure(cause) =>
             Left(cause.failureOrCause.left.getOrElse(???))
-          // Left(cause.g)
         }
-      //        throw new Exception("Unexpected exit: " + other)
     }
   }
 

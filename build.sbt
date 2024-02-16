@@ -1,7 +1,7 @@
 inThisBuild(
   List(
     organization := "co.adhoclabs",
-    version := "0.0.8",
+    version := "0.0.9",
 
     scalaVersion := "2.12.12",
 

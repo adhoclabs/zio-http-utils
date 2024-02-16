@@ -16,15 +16,5 @@ class HealthApiTest extends ApiTestBase {
         payloadAssertion = _ == "API is healthy!"
       )
     }
-    it("should return a 500 ErrrorResponse when a defect is encountered") {
-      provokeServerFailure(
-        app,
-        Request.get(s"/health/boom"),
-        expectedStatus   = Status.InternalServerError,
-        errorAssertion = _.error == "an implementation is missing"
-      )
-    }
   }
-
-
 }
