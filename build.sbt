@@ -1,7 +1,7 @@
 inThisBuild(
   List(
     organization := "co.adhoclabs",
-    version := "0.0.7",
+    version := "0.0.8",
 
     scalaVersion := "2.12.12",
 
@@ -33,7 +33,7 @@ inThisBuild(
 lazy val root =
   project.in(file("."))
     .settings(publish / skip := true)
-    .aggregate(models, utils, testUtils)
+    .aggregate(models, utils, testUtils, example)
 
 lazy val models =
   project.in(file("models"))
@@ -111,6 +111,29 @@ lazy val testUtils =
         else
           Some("releases"  at nexus + "content/repositories/releases")
       },
+      libraryDependencies ++= Seq(
+        // External dependencies
+        "ch.qos.logback"      %  "logback-classic"      % "1.2.3",
+
+        // Our dependencies
+        "co.adhoclabs" %% "model"      % "3.4.0",
+
+        // Test dependencies
+        "org.scalatest"     %% "scalatest"           % "3.2.16",
+        "org.scalamock"     %% "scalamock"           % "5.2.0",
+
+        // ZIO-HTTP (Let's get away from akka!)
+        "dev.zio" %% "zio-http" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
+        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
+        "dev.zio" %% "zio-schema"          % "0.4.15",
+      )
+    )
+
+lazy val example =
+  project.in(file("example"))
+    .settings(publish / skip := true)
+    .dependsOn(models, utils, testUtils)
+    .settings(
       libraryDependencies ++= Seq(
         // External dependencies
         "ch.qos.logback"      %  "logback-classic"      % "1.2.3",
