@@ -1,7 +1,7 @@
 inThisBuild(
   List(
-    organization := "co.adhoclabs",
-    version := "0.0.9",
+    organization := "co.adhoclabs.ziohttp",
+    version := "0.0.10",
 
     scalaVersion := "2.12.12",
 
