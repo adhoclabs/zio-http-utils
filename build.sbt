@@ -1,7 +1,7 @@
 inThisBuild(
   List(
     organization := "co.adhoclabs.ziohttp",
-    version := "0.0.10",
+    version := "0.0.11",
 
     scalaVersion := "2.12.12",
 
@@ -32,6 +32,7 @@ inThisBuild(
 
 lazy val root =
   project.in(file("."))
+    .settings(name := "zio-http-utils")
     .settings(publish / skip := true)
     .aggregate(models, utils, testUtils, example)
 
