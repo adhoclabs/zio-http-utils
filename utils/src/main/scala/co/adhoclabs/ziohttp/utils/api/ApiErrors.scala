@@ -1,8 +1,8 @@
-package co.adhoclabs.template.api
+package co.adhoclabs.ziohttp.utils.api
 
-import co.adhoclabs.template.exceptions.{UnexpectedException, ValidationException}
 import co.adhoclabs.ziohttp.Schemas._
 import co.adhoclabs.ziohttp._
+import co.adhoclabs.ziohttp.utils.exceptions.{UnexpectedException, ValidationException}
 import zio._
 import zio.http._
 import zio.http.endpoint.{Endpoint, EndpointMiddleware}

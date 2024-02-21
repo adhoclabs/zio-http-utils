@@ -1,4 +1,4 @@
-package co.adhoclabs.template.api
+package co.adhoclabs.ziohttp.utils.api
 
 import zio.http.{Request, Status}
 

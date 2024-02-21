@@ -1,6 +1,6 @@
 package com.adhoclabs.ziohttp.example
 
-import co.adhoclabs.template.api.{ApiErrors, HealthEndpoint}
+import co.adhoclabs.ziohttp.utils.api.{ApiErrors, HealthEndpoint}
 import org.slf4j.{Logger, LoggerFactory}
 import zio._
 import zio.http._

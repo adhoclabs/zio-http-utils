@@ -1,4 +1,4 @@
-package co.adhoclabs.template.exceptions
+package co.adhoclabs.ziohttp.utils.exceptions
 
 import co.adhoclabs.model.ErrorResponse
 
