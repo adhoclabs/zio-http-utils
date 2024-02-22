@@ -35,6 +35,7 @@ object ApiErrors {
     case unexpectedException: UnexpectedException =>
       Right(InternalErrorResponse(unexpectedException.errorResponse))
     case exception: Throwable =>
+      println("Unexpected exception: " + exception.getMessage)
       Right(InternalErrorResponse(exception.getMessage))
   }
 
