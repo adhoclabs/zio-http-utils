@@ -4,26 +4,22 @@ import zio._
 import zio.http._
 import zio.http.endpoint.Endpoint
 
+import scala.concurrent.Future
+
 object HealthEndpoint {
 
   val api =
-    Endpoint(Method.GET / "health" / "api")
-      .out[String]
-
-  val endpoints =
-    List(
-      api,
+    ApiErrors.attachStandardErrors(
+      Endpoint(Method.GET / "health" / "api")
+        .out[String]
     )
 }
 
 object HealthRoutes {
   val api =
     HealthEndpoint.api.implement {
-      Handler.fromZIO {
-        ZIO.succeed("API is healthy!")
-      }
+      ApiErrors.routeWithStandardErrors(
+        (_: Unit) => Future.successful("API is healthy!")
+      )
     }
-
-  val routes =
-    Routes(api)
 }

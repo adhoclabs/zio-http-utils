@@ -20,13 +20,6 @@ object AppApi {
 }
 
 object AppRoutes {
-  val api =
-    HealthEndpoint.api.implement {
-      Handler.fromZIO {
-        ZIO.succeed("API is healthy!")
-      }
-    }
-
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   val okBoomer =
@@ -38,5 +31,5 @@ object AppRoutes {
     }
 
   val routes =
-    Routes(api, okBoomer)
+    Routes(okBoomer)
 }
