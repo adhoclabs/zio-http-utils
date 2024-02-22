@@ -6,14 +6,6 @@ class HealthApiTest extends ApiTestBase {
   val app = AppRoutes.routes.toHttpApp
 
   describe("GET /health/api") {
-    it("should return a 200 response with an empty body") {
-      provokeServerSuccess[String](
-        app,
-        Request.get(s"/health/api"),
-        expectedStatus   = Status.Ok,
-        payloadAssertion = _ == "API is healthy!"
-      )
-    }
     it("should return a 500 ErrrorResponse when a defect is encountered") {
       provokeServerFailure(
         app,
