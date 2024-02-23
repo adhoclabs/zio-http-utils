@@ -1,7 +1,7 @@
 inThisBuild(
   List(
     organization := "co.adhoclabs.ziohttp",
-    version := "0.0.15",
+    version := "0.0.16",
 
     scalaVersion := "2.12.12",
 
@@ -60,8 +60,8 @@ lazy val models =
         "org.scalamock"     %% "scalamock"           % "5.2.0"         % Test,
 
         // ZIO-HTTP (Let's get away from akka!)
-        "dev.zio" %% "zio-http" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
-        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
+        "dev.zio" %% "zio-http" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
+        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
         "dev.zio" %% "zio-schema"          % "0.4.15",
       )
 
@@ -93,8 +93,8 @@ lazy val utils =
         "org.scalamock"     %% "scalamock"           % "5.2.0"         % Test,
 
         // ZIO-HTTP (Let's get away from akka!)
-        "dev.zio" %% "zio-http" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
-        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
+        "dev.zio" %% "zio-http" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
+        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
         "dev.zio" %% "zio-schema"          % "0.4.15",
       )
 
@@ -124,8 +124,8 @@ lazy val testUtils =
         "org.scalamock"     %% "scalamock"           % "5.2.0",
 
         // ZIO-HTTP (Let's get away from akka!)
-        "dev.zio" %% "zio-http" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
-        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
+        "dev.zio" %% "zio-http" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
+        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
         "dev.zio" %% "zio-schema"          % "0.4.15",
       )
     )
@@ -147,8 +147,8 @@ lazy val example =
         "org.scalamock"     %% "scalamock"           % "5.2.0",
 
         // ZIO-HTTP (Let's get away from akka!)
-        "dev.zio" %% "zio-http" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
-        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+71-b1da91b6-SNAPSHOT",
+        "dev.zio" %% "zio-http" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
+        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
         "dev.zio" %% "zio-schema"          % "0.4.15",
       )
     )
