@@ -16,8 +16,8 @@ object ApiErrors {
                                                               endpoint: Endpoint[A, B, ZNothing, C, D]
                                                             ): Endpoint[A, B, Either[BadRequestResponse, InternalErrorResponse], C, D] =
     endpoint
-      .outError[BadRequestResponse](Status.BadRequest)
       .outError[InternalErrorResponse](Status.InternalServerError)
+      .outError[BadRequestResponse](Status.BadRequest)
 
   def routeWithStandardErrors[Output](future: Future[Output]) =
     Handler.fromZIO {

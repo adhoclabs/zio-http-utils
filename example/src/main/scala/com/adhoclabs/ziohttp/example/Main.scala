@@ -4,7 +4,7 @@ import co.adhoclabs.ziohttp.utils.api.{HealthEndpoint, HealthRoutes}
 import com.typesafe.config.{Config, ConfigFactory}
 import org.slf4j.{Logger, LoggerFactory}
 import zio.http.endpoint.openapi.{OpenAPIGen, SwaggerUI}
-import zio.http.{Middleware, Routes, Server}
+import zio.http.{HttpApp, Middleware, Routes, Server}
 import zio.{ZIO, ZIOAppDefault}
 
 import java.time.Clock
@@ -26,14 +26,13 @@ object MainZio extends ZIOAppDefault {
   val zioRoutes = (docsRoute ++ AppRoutes.routes ++ Routes(HealthRoutes.api)) @@
     Middleware.requestLogging(statusCode => zio.LogLevel.Warning)
 
-  val app = zioRoutes.toHttpApp
 
   val config = Dependencies.config
   val host = config.getString("co.adhoclabs.template.host")
   val port = config.getInt("co.adhoclabs.template.port")
   def run = {
     ZIO.debug("Starting") *>
-      Server.serve(app).provide(Server.defaultWith(config => config.binding(hostname = host, port = port))).exitCode
+      Server.serve(zioRoutes).provide(Server.defaultWith(config => config.binding(hostname = host, port = port))).exitCode
     /*
     TODO Can we replicate this exactly?
     Akka startup output:

@@ -60,9 +60,9 @@ lazy val models =
         "org.scalamock"     %% "scalamock"           % "5.2.0"         % Test,
 
         // ZIO-HTTP (Let's get away from akka!)
-        "dev.zio" %% "zio-http" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
-        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC4+77-66867e7f-SNAPSHOT",
-        "dev.zio" %% "zio-schema"          % "0.4.15",
+        "dev.zio" %% "zio-http" % "3.0.0-RC7",
+        "dev.zio" %% "zio-http-testkit" % "3.0.0-RC7",
+        "dev.zio" %% "zio-schema"          % "1.1.1",
       )
 
     )
