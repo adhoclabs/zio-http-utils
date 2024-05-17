@@ -5,13 +5,13 @@ import org.scalamock.scalatest.AsyncMockFactory
 import org.scalatest.OneInstancePerTest
 import org.scalatest.funspec.AsyncFunSpec
 import zio.{Exit, Unsafe, ZIO}
-import zio.http.{HttpApp, Request, Routes, Status}
+import zio.http.{HttpApp, Request, Response, Routes, Status}
 import zio.schema.Schema
 import zio.schema.codec.JsonCodec.schemaBasedBinaryCodec
 
 trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInstancePerTest {
   def provokeServerFailure(
-    app:            Routes[Any, Nothing],
+    app:            Routes[Any, Response],
     request:        Request,
     expectedStatus: Status,
     errorAssertion: ErrorResponse => Boolean = _ => true
@@ -28,7 +28,7 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
   }
 
   def provokeServerSuccess[T: Schema](
-    app:              Routes[Any, Nothing],
+    app:              Routes[Any, Response],
     request:          Request,
     expectedStatus:   Status,
     payloadAssertion: T => Boolean = (_: T) => true
@@ -41,7 +41,7 @@ trait ZioHttpTestHelpers extends AsyncFunSpec with AsyncMockFactory with OneInst
     assert(payloadAssertion(errorResponse))
   }
 
-  private def invokeZioRequest[T: Schema](app: Routes[Any, Nothing], request: Request): Either[(Status, ErrorResponse), (Status, T)] = {
+  private def invokeZioRequest[T: Schema](app: Routes[Any, Response], request: Request): Either[(Status, ErrorResponse), (Status, T)] = {
     val runtime = zio.Runtime.default
     Unsafe.unsafe { implicit unsafe =>
 
